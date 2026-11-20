@@ -1,0 +1,3 @@
+﻿Dim,DimTransactionType,1,TransactionTypeKey,int
+Dim,DimTransactionType,2,TransactionTypeCode,nchar
+Dim,DimTransactionType,3,TransactionTypeName,nvarchar

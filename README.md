@@ -1,298 +1,431 @@
-# Enterprise Business Intelligence Suite — AdventureWorks
+# Enterprise Business Intelligence Suite for a Multi-Region Company: AdventureWorks
 
-An end-to-end Enterprise Business Intelligence and Data Engineering project designed to integrate Sales, Finance, Human Resources, and Supply Chain data into a centralized analytical reporting solution.
+**Organization:** Nexvia Technologies  
+**Internship:** Data Analytics Internship  
+**Source Database:** AdventureWorks2025  
+**SQL Server Warehouse:** `EnterpriseBI_DW`  
+**Reporting Platform:** Power BI Desktop
 
-The project uses the raw `AdventureWorks2025` OLTP database as its source and a custom-built SQL Server data warehouse named `Enterprise BI DW` as its analytical database.
+---
 
-The objective is to develop a unified reporting system for a multi-region company, incorporating dimensional modeling, automated ETL pipelines, interactive Power BI dashboards, business KPIs, and region-based Row-Level Security (RLS).
+## 1. Project Overview
 
-## Project Objectives
+The Enterprise Business Intelligence Suite is an integrated analytics solution developed using the AdventureWorks2025 dataset.
 
-- Develop a custom analytical data warehouse using raw operational data.
-- Design fact and dimension tables using Star Schema principles.
-- Integrate four business domains: Sales, Finance, HR, and Supply Chain.
-- Clean and transform data using Power Query.
-- Implement automated data movement and ETL pipelines using Azure Data Factory.
-- Develop DAX measures and business KPIs.
-- Build interactive Power BI dashboards.
-- Implement regional Row-Level Security.
-- Establish a reliable and repeatable data processing workflow.
-
-## Technology Stack
-
-| Technology | Purpose |
-|---|---|
-| SQL Server 2025 | Source database and analytical data warehouse |
-| SSMS | Database management and SQL development |
-| SQL | Data modeling, transformations, loading, and validation |
-| Azure Data Factory | ETL orchestration and data movement |
-| Self-Hosted Integration Runtime | Connectivity between Azure Data Factory and local SQL Server |
-| Power Query | Data cleaning and transformation |
-| Power BI Desktop | Data modeling and visualization |
-| DAX | Business calculations and analytical KPIs |
-
-## Database Architecture
-
-The project uses two separate SQL Server databases.
-
-| Database | Role |
-|---|---|
-| `AdventureWorks2025` | Raw OLTP source database |
-| `Enterprise BI DW` | Custom-built analytical data warehouse |
-
-### Source Database: AdventureWorks2025
-
-The original AdventureWorks2025 OLTP database serves as the primary source of operational data.
-
-Relevant source tables are used to develop custom fact and dimension tables according to the analytical requirements of the project.
-
-### Target Database: Enterprise BI DW
-
-A separate database named `Enterprise BI DW` has been created in SQL Server.
-
-Raw operational data from AdventureWorks2025 is used to develop fact and dimension tables for four business domains:
+The project brings together four major business functions:
 
 - Sales
 - Finance
 - Human Resources (HR)
 - Supply Chain
 
-This separation keeps the operational source database independent from the analytical data warehouse.
+The primary objective is to develop a centralized enterprise data warehouse and an integrated reporting environment that transforms operational data into meaningful business insights.
 
-## Dimensional Modeling
+The solution uses SQL Server for data warehousing, Azure Data Factory for ETL orchestration, and Power BI Desktop for data modelling, DAX calculations, and interactive dashboards.
 
-The analytical data warehouse follows Star Schema principles.
+This project demonstrates how data from multiple business departments can be integrated, transformed, analysed, and presented through a unified business intelligence environment.
 
-Fact tables store measurable business events, while dimension tables provide descriptive attributes for analytical reporting.
+## 2. Business Objectives
 
-Fact and dimension tables have been developed for all four business domains.
+The major objectives of this project are:
 
-### Sales
+1. Integrate operational data from multiple business departments.
+2. Develop a centralized enterprise data warehouse.
+3. Implement structured ETL workflows using Azure Data Factory.
+4. Apply dimensional modelling using fact and dimension tables.
+5. Develop analytical measures using DAX.
+6. Build interactive departmental KPI dashboards.
+7. Implement row-level security for controlled data access.
+8. Provide detailed reporting through drill-through functionality.
+9. Establish a reusable and maintainable business intelligence architecture.
 
-Supports sales-related analysis and business performance reporting.
+## 3. Project Architecture
 
-### Finance
+The implemented architecture follows this data flow:
 
-Supports financial and purchasing-related analysis.
+```text
+AdventureWorks2025
+   (Source OLTP Database)
+            |
+            v
+    Azure Data Factory
+            |
+   Self-Hosted Integration
+         Runtime
+            |
+            v
+    Departmental ETL
+       Pipelines
+            |
+   +--------+--------+
+   |        |        |
+ Sales   Finance    HR
+            |
+       Supply Chain
+            |
+            v
+   Master Orchestration
+        Pipeline
+            |
+            v
+      EnterpriseBI_DW
+       (SQL Server)
+            |
+            v
+     Power BI Data Model
+            |
+     Power Query + DAX
+            |
+            v
+    Enterprise BI Reports
+            |
+   +--------+--------+
+   |        |        |
+ Sales   Finance    HR
+            |
+       Supply Chain
+```
 
-### Human Resources
+### Architecture Components
 
-Supports employee-related analytics, including employee snapshots, department history, and pay history.
+**1. Operational Data Source**
 
-### Supply Chain
+AdventureWorks2025 serves as the primary operational database.
 
-Supports inventory, inventory transaction, and work order analysis.
+**2. Data Integration**
 
-The existing purchase order fact model is also incorporated where appropriate.
+Azure Data Factory manages the extraction and loading workflows. A self-hosted integration runtime establishes connectivity between Azure Data Factory and the locally hosted SQL Server environment.
 
-## Star Schema Design
+**3. ETL Processing**
 
-Five different star schema layouts have been designed in Power BI Model View.
+Four departmental ETL pipelines handle Sales, Finance, HR, and Supply Chain data. A master orchestration pipeline coordinates their execution and dependencies.
 
-| Diagram | Description |
+**4. Enterprise Data Warehouse**
+
+The custom SQL Server database `EnterpriseBI_DW` provides the centralized analytical data foundation.
+
+**5. Reporting and Analytics**
+
+Power BI Desktop connects to the warehouse and provides data transformation, semantic modelling, DAX calculations, interactive dashboards, and drill-through reporting.
+
+## 4. Technology Stack
+
+| Layer | Technologies |
 |---|---|
-| Sales Star Schema | Sales fact and dimension relationships |
-| Finance Star Schema | Finance fact and dimension relationships |
-| HR Star Schema | HR fact and dimension relationships |
-| Supply Chain Star Schema | Supply Chain fact and dimension relationships |
-| Enterprise Overview | Combined view of fact and dimension tables across all four business domains |
+| Source Database | AdventureWorks2025 |
+| Database Management | SQL Server 2025, SQL Server Management Studio |
+| Query Language | SQL, T-SQL |
+| Data Warehouse | Custom SQL Server Database |
+| ETL and Orchestration | Azure Data Factory |
+| Connectivity | Self-Hosted Integration Runtime |
+| Data Transformation | Power Query |
+| Business Intelligence | Power BI Desktop |
+| Analytical Calculations | DAX |
+| Version Control | Git, GitHub |
+| Documentation | Markdown |
 
-**Location:** `docs/diagrams/star_schema/`
+## 5. Enterprise Data Warehouse
 
-## Data Cleaning and Shaping
+The project uses a custom SQL Server database named:
 
-Data cleaning and shaping have been completed in Power Query for fact and dimension tables across all four business domains.
+`EnterpriseBI_DW`
 
-Activities included:
+The warehouse follows a dimensional modelling approach, organizing analytical data into fact and dimension tables.
 
-- Data type verification and correction.
-- Null and missing value analysis.
-- Duplicate and distinct value checks.
-- Column quality examination.
-- Removal of unnecessary columns where appropriate.
-- Investigation of inconsistent and invalid values.
-- Application of required transformations.
+### Business Domains
 
-## Phase 3: Data Movement and ETL Using Azure Data Factory
+**Sales**
 
-**Status: COMPLETED**
+- Sales transactions
+- Revenue analysis
+- Profitability analysis
+- Customer performance
+- Product performance
+- Regional sales performance
+- Time-based sales analysis
 
-Azure Data Factory has been configured and implemented to orchestrate data movement between the AdventureWorks2025 source database and the `Enterprise BI DW` analytical database.
+**Finance**
 
-### Azure Data Factory Configuration
+- Purchasing expenditure
+- Purchasing trends
+- Vendor performance
+- Purchase order analysis
 
-The following components have been configured:
+**Human Resources**
 
-- Azure Data Factory instance.
-- Self-Hosted Integration Runtime for connectivity to the local SQL Server environment.
-- Source linked service.
-- Destination linked service.
-- Source datasets.
-- Destination datasets.
+- Employee information
+- Department-wise workforce distribution
+- Compensation-related analysis
+- Employee history
 
-### Departmental ETL Pipelines
+**Supply Chain**
 
-Four separate departmental ETL pipelines have been developed:
+- Inventory transactions
+- Production activities
+- Work order analysis
+- Inventory and production monitoring
+
+## 6. Azure Data Factory Implementation
+
+Azure Data Factory was used to implement the ETL and orchestration layer.
+
+### Implemented Components
+
+- Self-hosted integration runtime
+- Linked services
+- Datasets
+- Four departmental ETL pipelines
+- Stored procedure activities
+- Master orchestration pipeline
+- Pipeline dependencies
+- Pipeline monitoring and execution validation
+
+### Departmental Pipelines
 
 1. Sales ETL Pipeline
 2. Finance ETL Pipeline
 3. HR ETL Pipeline
 4. Supply Chain ETL Pipeline
 
-Stored procedure activities have been configured within the pipelines to execute the corresponding SQL-based data processing and loading operations.
+The master orchestration pipeline coordinates departmental pipeline execution.
 
-### Master Orchestration Pipeline
+All four departmental pipelines and the master orchestration workflow were successfully executed and validated during development.
 
-A master orchestration pipeline has been developed to coordinate the execution of all four departmental pipelines.
+## 7. Power BI Implementation
 
-Implemented capabilities include:
+Power BI Desktop was used to build the semantic model and reporting environment.
 
-- Integration of all four departmental pipelines.
-- Sequential execution.
-- Pipeline dependencies.
-- Execution order management.
+### Data Modelling
 
-### Publishing and Testing
+- Connected Power BI to `EnterpriseBI_DW`.
+- Prepared and transformed data using Power Query.
+- Developed relationships between fact and dimension tables.
+- Created a dedicated measures table.
+- Organized measures into departmental folders.
 
-- Validated all pipelines.
-- Published the configured pipelines.
-- Successfully executed and tested all four departmental pipelines individually.
-- Successfully executed and tested the master orchestration pipeline.
+### DAX Measures Organization
 
-**Result:** The mandatory Azure Data Factory implementation tasks for Phase 3 have been completed successfully.
-
-## SQL Development and Validation
-
-SQL scripts have been developed to support warehouse creation, ETL processing, data loading, and validation.
-
-The SQL development includes:
-
-- Fact and dimension table creation.
-- Dimension loading queries.
-- Fact loading queries.
-- ETL transformation queries.
-- Stored procedure implementation.
-- Dimension ETL validation.
-- Dimension table verification.
-- Fact and dimension loading validation.
-
-The SQL scripts supporting ETL and loading activities are maintained in the `03_SQL` directory.
-
-## Technical Challenges and Resolutions
-
-### HR Date Dimension Mismatch
-
-The dates in `FactEmployeeDepartmentHistory` and `FactEmployeePayHistory` initially did not match the available date range in `DimDate`.
-
-**Resolution:** Extended and updated the date dimension and rewrote the SQL queries for both HR fact tables.
-
-### Power BI Model Synchronization
-
-Changes made to `DimDate` in Power Query were not initially reflected correctly in Power BI Desktop. The related HR fact tables also failed to reflect the expected updates.
-
-**Resolution:** Resolved the refresh and model synchronization issues and verified the updated tables and relationships.
-
-### SQL Server Collation Conflict
-
-A collation conflict occurred while developing `FactInventoryTransaction`.
-
-**Resolution:** Applied `COLLATE DATABASE_DEFAULT` to the relevant SQL operation.
-
-## Next Phase: DAX Measures and Analytical Calculations
-
-The next development phase focuses on creating DAX measures in Power BI.
-
-Planned activities include:
-
-- Total Sales and Revenue measures.
-- Year-to-Date (YTD) calculations.
-- Year-over-Year (YoY) growth.
-- Profit and margin percentage calculations.
-- Rolling averages.
-- Department-specific analytical KPIs.
-- Validation of DAX calculations against SQL results.
-
-## Power BI Reporting and Security
-
-Following DAX development, Power BI will be used to build the final analytical reporting solution.
-
-Planned capabilities include:
-
-- Sales performance dashboards.
-- Financial and purchasing analysis.
-- Human Resources analytics.
-- Supply Chain and inventory reporting.
-- Interactive filtering and drill-down analysis.
-- Regional Row-Level Security.
-
-## Repository Structure
+The measures table contains the following folders:
 
 ```text
-Enterprise-BI-Project/
+_Measures
+│
+├── 01_Sales
+├── 02_Finance
+├── 03_HR
+├── 04_Supply_Chain
+└── 05_Enterprise
+```
+
+### Departmental Dashboards
+
+**1. Sales KPI Dashboard**
+
+Provides insights into revenue, profitability, orders, customers, products, sales trends, and regional performance.
+
+**2. Finance KPI Dashboard**
+
+Provides insights into purchasing expenditure, purchasing trends, and vendor performance.
+
+**3. HR KPI Dashboard**
+
+Provides insights into workforce distribution, employee information, and compensation-related metrics.
+
+**4. Supply Chain KPI Dashboard**
+
+Provides insights into inventory transactions and production/work-order activities.
+
+### Drill-through Functionality
+
+Detailed reporting pages include:
+
+- Product Details
+- Purchase Order Details
+
+These pages allow users to navigate from summarized dashboard information to relevant detailed records.
+
+Customer Details and Vendor Details should be considered implemented only where present and functional in the final Power BI report.
+
+## 8. Data Validation and Recorded Results
+
+The following validation observations were recorded during development.
+
+| Validation Area | Recorded Result |
+|---|---|
+| ADF Departmental Pipelines | Successful execution |
+| ADF Master Orchestration | Successful execution |
+| Inventory Transaction Fact | 113,443 rows |
+| Work Order Fact | 72,591 rows |
+| Customer Key | 100% valid across 19,820 records |
+| Person ID | Approximately 96% valid |
+| Product Key | 100% valid across 4,504 records |
+| Product Colour | Approximately 51% populated/valid |
+| Sales Person Key | 100% valid; 17 distinct values |
+| Sales Territory Key | 100% valid; 10 distinct values |
+| Power BI Desktop Refresh | Completed without an error |
+
+The profiling percentages refer to specific columns and validation checks. They should not be interpreted as an overall warehouse data-quality score.
+
+No verified benchmark values were recorded for ADF execution duration, SQL query latency, dashboard loading time, Power BI refresh duration, or end-to-end processing time. Therefore, no performance figures are claimed.
+
+## 9. Row-Level Security (RLS)
+
+Row-Level Security was implemented to control access to business information according to authorized user permissions.
+
+### Implementation Status
+
+| Department | RLS Status |
+|---|---|
+| Sales | Regional RLS implemented and validated |
+| Finance | Regional RLS implemented and validated |
+| HR | Regional mapping covers 14 of 290 employees; incomplete |
+| Supply Chain | Global authorized-user access tested; geographical regional mapping incomplete |
+
+### Documented Limitations
+
+**Sales:** Regional row-level security was implemented and validated.
+
+**Finance:** Regional row-level security was implemented and validated.
+
+**HR:** The current regional mapping covers only 14 of 290 employees. Complete geographical regional coverage has not been implemented.
+
+**Supply Chain:** Global authorized-user access was tested. Complete geographical regional mapping remains incomplete because operational production locations were not verified as geographical facilities.
+
+These limitations are documented and should not be represented as complete regional RLS across all four departments.
+
+## 10. Technical Challenges and Resolutions
+
+Several technical challenges were encountered and addressed during development.
+
+| Challenge | Resolution |
+|---|---|
+| HR date ranges did not align with the existing date dimension | Updated/extended the date dimension and revised HR fact-loading SQL |
+| SQL Server collation conflict during inventory transaction development | Resolved using `COLLATE DATABASE_DEFAULT` where appropriate |
+| Power BI model synchronization issues following date dimension changes | Refreshed and synchronized the model and verified updated tables and relationships |
+| DAX time-intelligence and filter-context issues | Investigated measure logic and filter context; individual final results should be confirmed against the final report and test evidence |
+| Incomplete geographical RLS mapping | Validated Sales and Finance regional RLS and documented HR and Supply Chain limitations |
+
+## 11. Power BI Service Publishing Limitation
+
+My initial plan was to publish the Power BI report to Power BI Service.
+
+However, I could not complete this step because I was unable to obtain or use a working email/account suitable for the Power BI publishing sign-in process.
+
+As a result, the completed reporting solution is available through Power BI Desktop, and the local Desktop refresh was successfully validated.
+
+The following activities were not completed:
+
+- Publishing the report to Power BI Service.
+- Configuring a gateway for the published service model.
+- Configuring and validating cloud-based scheduled refresh.
+
+These are deployment improvements and are not represented as completed project functionality.
+
+## 12. Repository Structure
+
+The project repository is organized to separate source scripts, documentation, and project deliverables.
+
+```text
+enterprise-bi-suite-adventureworks/
 │
 ├── README.md
 │
 ├── docs/
-│   ├── requirements.md
+│   ├── data_dictionary.md
 │   ├── decisions.md
 │   ├── journal.md
-│   ├── data_dictionary.md
-│   ├── diagrams/
-│   │   └── star_schema/
-│   └── validation_results/
+│   └── requirements.md
 │
 ├── sql/
 │   ├── 00_profiling/
 │   ├── 001_restore/
 │   ├── 02_warehouse/
-│   └── 03_SQL/
-│       ├── dimension_validation/
-│       ├── dimension_load/
-│       ├── fact_load/
-│       └── etl_validation/
+│   └── 03_etl/
 │
 ├── azure-data-factory/
+│   └── ADF project artifacts (if exported)
 │
-├── powerbi/
-│
-└── tests/
+└── powerbi/
+    └── Power BI report and related files
 ```
 
-The repository structure separates database development, documentation, ETL implementation, validation, and reporting assets.
+The final project presentation and working demonstration video are hosted externally on Google Drive. Their access links are provided in the **Final Project Deliverables** section at the end of this README.
 
-## Project Progress
+## 13. Project Review and Reproduction
 
-| Phase | Description | Status |
-|---|---|---|
-| 0 | Project setup and repository organization | Completed |
-| 1 | Source database selection and setup | Completed |
-| 2 | Data warehouse and dimensional modeling | Completed |
-| 3 | Data cleaning, shaping, and star schema design | Completed |
-| 4 | Azure Data Factory configuration and ETL implementation | Completed |
-| 5 | DAX measures and analytical calculations | Next |
-| 6 | Power BI dashboards and reporting | Upcoming |
-| 7 | Regional Row-Level Security | Upcoming |
-| 8 | End-to-end testing and final documentation | Upcoming |
+To review the project:
 
-## Design Principles
+1. Read this README.
+2. Review `docs/requirements.md`.
+3. Review `docs/decisions.md`.
+4. Review `docs/data_dictionary.md`.
+5. Review `docs/journal.md`.
+6. Inspect the SQL scripts.
+7. Review the Azure Data Factory artifacts, if exported.
+8. Open the Power BI report using Power BI Desktop.
+9. Access the final project presentation and working demonstration using the Google Drive links provided at the end of this README.
 
-- **Source-first development:** Build the analytical model using raw operational data.
-- **Separation of concerns:** Keep the OLTP source and analytical warehouse separate.
-- **Dimensional modeling:** Organize analytical data using fact and dimension tables.
-- **Data integrity:** Maintain appropriate keys, relationships, and validation rules.
-- **Automation:** Use Azure Data Factory to orchestrate repeatable ETL workflows.
-- **Reliability:** Validate departmental pipelines and master orchestration.
-- **Security:** Implement regional access restrictions through RLS.
-- **Documentation:** Maintain architectural decisions, implementation records, and validation evidence.
+To reproduce the implementation, a compatible SQL Server environment, AdventureWorks2025 source database, warehouse scripts, and relevant ADF and Power BI artifacts are required.
 
-## Previous Implementation Archive
+Environment-specific connection settings, server names, integration runtime configuration, and credentials must be configured for the target environment.
 
-An earlier implementation was based on the prebuilt AdventureWorksDW2025 data warehouse.
+Passwords, API keys, access tokens, and personal account credentials must never be committed to GitHub.
 
-The approach was subsequently changed to use the raw AdventureWorks2025 OLTP database and develop a custom analytical data warehouse.
+## 14. Final Project Status
 
-Previous documentation and relevant work are retained separately for historical reference.
+The following components were completed:
 
-## Data Attribution
+- AdventureWorks2025 operational source integration.
+- Custom SQL Server enterprise data warehouse.
+- Fact and dimension structures for four business domains.
+- Azure Data Factory ETL implementation.
+- Four departmental ETL pipelines.
+- Master orchestration pipeline.
+- Power BI semantic model.
+- DAX measures.
+- Four departmental KPI dashboards.
+- Interactive filtering and drill-through reporting.
+- Sales and Finance regional RLS.
+- Documented HR and Supply Chain security limitations.
+- Final project presentation.
+- Working demonstration materials.
+- Project documentation.
 
-AdventureWorks sample databases are provided by Microsoft for learning and development purposes. Refer to Microsoft's official sample database documentation for source information and applicable terms.
+Power BI Service publishing, cloud scheduled refresh, complete HR regional RLS, and complete geographical Supply Chain RLS remain outside the completed implementation scope.
+
+---
+
+**Project:** Enterprise Business Intelligence Suite for a Multi-Region Company: AdventureWorks  
+**Organization:** Nexvia Technologies  
+**Source Database:** AdventureWorks2025  
+**Warehouse:** `EnterpriseBI_DW`
+
+## 15. Final Project Deliverables
+
+The final presentation and complete working demonstration video for the Enterprise Business Intelligence Suite are available through the following Google Drive links.
+
+### Final Project Presentation
+
+The presentation covers the project introduction, business objectives, system architecture, technology stack, enterprise data warehouse, ETL implementation, Power BI dashboards, validation results, security implementation, technical challenges, and individual project reflection.
+
+**Google Drive Link:** (https://drive.google.com/drive/folders/1NqOojnF4_8HDE4aNvNmXU2YxDmdKSVYP?usp=drive_link)
+
+### Complete Working Demo Video
+
+The working demonstration provides a practical walkthrough of the implemented solution, including:
+
+- System architecture.
+- SQL Server Enterprise Data Warehouse.
+- Azure Data Factory ETL pipelines.
+- Successful pipeline execution history.
+- Sales KPI Dashboard.
+- Finance KPI Dashboard.
+- HR KPI Dashboard.
+- Supply Chain KPI Dashboard.
+- Drill-through functionality.
+- Sales and Finance Row-Level Security.
+- Documented security limitations.
+
+**Google Drive Link:** (https://drive.google.com/drive/folders/1NqOojnF4_8HDE4aNvNmXU2YxDmdKSVYP?usp=drive_link)
+
+**Note:** Access to both deliverables depends on the Google Drive sharing permissions configured for the links.

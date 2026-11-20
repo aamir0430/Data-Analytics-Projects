@@ -1,134 +1,319 @@
 # Project Development Journal
 
-This journal documents the major development milestones, implementation activities, and technical challenges encountered during the development of the Enterprise Business Intelligence Suite.
+## Project Information
 
-## 1. Database Setup and Dimensional Modeling
+**Project Title:** Enterprise Business Intelligence Suite for a Multi-Region Company: AdventureWorks  
+**Organization:** Nexvia Technologies  
+**Internship:** Data Analytics Internship  
+**Source Database:** AdventureWorks2025  
+**Warehouse Database:** `EnterpriseBI_DW`
 
-- Selected the raw `AdventureWorks2025` OLTP database as the primary source.
-- Created a separate SQL Server database named `Enterprise BI DW`.
-- Used raw source data to create custom fact and dimension tables for Sales, Finance, and Human Resources (HR).
-- Extended the dimensional model to include Supply Chain.
-- Created fact and dimension tables for all four business domains.
-- Organized warehouse schema creation scripts in `sql/02_warehouse/`.
+### Technology Stack
 
-## 2. Data Cleaning and Shaping
+- SQL Server 2025
+- SQL Server Management Studio
+- SQL and T-SQL
+- Azure Data Factory
+- Self-Hosted Integration Runtime
+- Power Query
+- Power BI Desktop
+- DAX
+- Git and GitHub
+- Markdown
 
-Completed data cleaning and shaping in Power Query for fact and dimension tables across all four business domains:
+This document consolidates the major development activities, implementation outcomes, and technical challenges encountered throughout the project.
 
-- Sales
-- Finance
-- Human Resources (HR)
-- Supply Chain
+---
 
-Activities included data type verification, null value analysis, duplicate checks, column quality examination, removal of unnecessary columns, and other required transformations.
+## 1. Project Setup and Source Selection
 
-## 3. Star Schema Design
+The project began with the selection of AdventureWorks2025 as the operational source database.
 
-Designed five different star schema layouts in Power BI Model View:
+A separate custom analytical database named `EnterpriseBI_DW` was created to support enterprise reporting.
 
-1. Sales Star Schema
-2. Finance Star Schema
-3. HR Star Schema
-4. Supply Chain Star Schema
-5. Enterprise Overview – Combined view of fact and dimension tables across all four business domains.
+The SQL project was organized into folders for:
 
-The diagrams are maintained in `docs/diagrams/star_schema/`.
+- Data profiling.
+- Database restoration.
+- Warehouse development.
+- ETL development.
 
-## 4. Technical Challenges and Resolutions
+Four major reporting domains were established:
 
-### HR Date Dimension Mismatch
+1. Sales.
+2. Finance.
+3. Human Resources.
+4. Supply Chain.
 
-The dates in `FactEmployeeDepartmentHistory` and `FactEmployeePayHistory` did not match the available date range in `DimDate`.
+## 2. Data Profiling and Preparation
 
-**Resolution:** Extended and updated `DimDate`, rewrote the SQL queries for both HR fact tables, and verified the updated data and relationships.
+Source data profiling was performed to understand the completeness and validity of important business attributes.
 
-### Power BI Model Synchronization
+The following observations were recorded:
 
-Changes made to `DimDate` in Power Query were not initially reflected correctly in Power BI Desktop. The two related HR fact tables also failed to reflect the expected updates.
+| Attribute | Recorded Result |
+|---|---|
+| Customer Key | 100% valid across 19,820 records |
+| Person ID | Approximately 96% valid |
+| Product Key | 100% valid across 4,504 records |
+| Product Colour | Approximately 51% populated/valid |
+| Sales Person Key | 100% valid; 17 distinct values |
+| Sales Territory Key | 100% valid; 10 distinct values |
 
-**Resolution:** Resolved the model refresh and synchronization issues and verified the updated tables and relationships.
+These results refer to specific fields and profiling checks. They are not an overall data-quality score.
 
-### SQL Server Collation Conflict
+## 3. Enterprise Data Warehouse Development
 
-A collation conflict occurred while developing `FactInventoryTransaction`.
+The custom SQL Server database `EnterpriseBI_DW` was developed using AdventureWorks2025 as the operational source.
 
-**Resolution:** Applied `COLLATE DATABASE_DEFAULT` to the relevant SQL operation, resolving the issue.
+Major activities included:
 
-## 5. Phase 3 – Data Movement and ETL Implementation Using Azure Data Factory
+- Creating analytical fact tables.
+- Creating dimension tables.
+- Organizing data for the four business domains.
+- Developing SQL scripts for warehouse objects.
+- Developing data-loading procedures.
+- Performing SQL validation.
+- Checking warehouse row counts.
 
-**Status: COMPLETED**
+### Recorded Supply Chain Results
 
-Implemented the end-to-end data movement and ETL orchestration infrastructure using Azure Data Factory.
+| Fact Table | Recorded Rows |
+|---|---:|
+| Inventory Transaction Fact | 113,443 |
+| Work Order Fact | 72,591 |
 
-### Azure Data Factory Configuration
+These counts were recorded during the project implementation.
 
-- Configured Azure Data Factory.
-- Configured and established a Self-Hosted Integration Runtime to connect to the local SQL Server environment.
-- Created source and destination linked services.
-- Configured source and destination datasets.
+## 4. Azure Data Factory and ETL Development
 
-### Departmental ETL Pipelines
+Azure Data Factory was implemented as the data integration and orchestration layer.
 
-Created four separate departmental ETL pipelines:
+Major activities included:
 
-1. Sales ETL Pipeline
-2. Finance ETL Pipeline
-3. HR ETL Pipeline
-4. Supply Chain ETL Pipeline
+1. Configuring the self-hosted integration runtime.
+2. Establishing SQL Server connectivity.
+3. Configuring linked services.
+4. Creating datasets.
+5. Developing four departmental ETL pipelines.
+6. Incorporating stored procedure activities.
+7. Developing the master orchestration pipeline.
+8. Configuring pipeline dependencies.
+9. Executing and monitoring the pipelines.
 
-### Stored Procedure Activities
+### Departmental Pipelines
 
-- Configured stored procedure activities within the departmental pipelines.
-- Connected the pipelines to the corresponding SQL stored procedures.
-- Established the required execution sequence for the data loading operations.
+- Sales ETL.
+- Finance ETL.
+- HR ETL.
+- Supply Chain ETL.
 
-### Master Orchestration Pipeline
+The master orchestration pipeline coordinates departmental execution.
 
-- Created a master orchestration pipeline.
-- Integrated all four departmental ETL pipelines.
-- Configured sequential execution and pipeline dependencies.
-- Established the execution order between departmental pipelines.
+All four departmental pipelines and the master orchestration workflow were successfully executed and validated.
 
-### Publishing and Testing
+## 5. Power BI Data Modelling and DAX Development
 
-- Validated the ADF pipelines.
-- Published all configured pipelines.
-- Successfully executed and tested all four departmental pipelines individually.
-- Successfully executed and tested the master orchestration pipeline.
-- Verified that the departmental pipelines execute through the master pipeline according to the configured dependencies.
+Power BI Desktop was connected to the `EnterpriseBI_DW` database.
 
-**Outcome:** The Azure Data Factory implementation is complete. All four departmental pipelines and the master orchestration pipeline have been successfully tested. No mandatory Phase 3 implementation tasks remain.
+Major activities included:
 
-## 6. SQL ETL and Validation Documentation
+- Importing warehouse data.
+- Preparing and transforming data using Power Query.
+- Developing relationships between fact and dimension tables.
+- Creating a dedicated measures table.
+- Organizing measures into departmental folders.
+- Developing business KPIs.
+- Implementing time-based calculations.
+- Formatting measures for reporting.
 
-Developed and organized SQL scripts supporting the ETL implementation and data validation in the `03_SQL` folder.
+### Measures Table Structure
 
-The SQL development work includes:
+```text
+_Measures
+│
+├── 01_Sales
+├── 02_Finance
+├── 03_HR
+├── 04_Supply_Chain
+└── 05_Enterprise
+```
 
-- Dimension ETL validation queries.
-- Dimension table verification queries.
-- Dimension loading SQL queries.
-- Fact loading SQL queries.
-- ETL transformation queries.
-- Fact and dimension loading procedures.
-- Validation queries for verifying departmental ETL operations and loaded data.
+Sales measures were developed across revenue, profitability, time intelligence, and business analytics.
 
-These scripts provide supporting evidence for the data movement, loading, and validation processes.
+Finance, HR, and Supply Chain measures were also developed to support their respective dashboards.
 
-## Current Project Milestone
+DAX and filter-context behaviour required troubleshooting during development. Individual measure results should be treated as verified only where confirmed in the final report and supporting test evidence.
 
-The following major stages have been completed:
+## 6. Departmental Dashboard Development
 
-- Source database selection and target warehouse creation.
-- Fact and dimension table development for Sales, Finance, HR, and Supply Chain.
-- Data cleaning and shaping across all four business domains.
-- Five star schema layouts in Power BI.
-- SQL-based ETL development and validation.
-- Azure Data Factory configuration and integration.
+Four departmental dashboards were developed in Power BI Desktop.
+
+### 6.1 Sales KPI Dashboard
+
+The Sales dashboard provides:
+
+- Revenue analysis.
+- Profitability analysis.
+- Order metrics.
+- Customer performance.
+- Product performance.
+- Regional sales analysis.
+- Sales trend analysis.
+
+### 6.2 Finance KPI Dashboard
+
+The Finance dashboard provides:
+
+- Purchasing expenditure analysis.
+- Purchasing trends.
+- Vendor performance.
+- Purchase order analysis.
+
+### 6.3 HR KPI Dashboard
+
+The HR dashboard provides:
+
+- Workforce analysis.
+- Employee information.
+- Department-wise workforce distribution.
+- Compensation-related analysis.
+
+### 6.4 Supply Chain KPI Dashboard
+
+The Supply Chain dashboard provides:
+
+- Inventory transaction analysis.
+- Production performance.
+- Work order analysis.
+- Supply chain operational monitoring.
+
+## 7. Drill-through and Interactive Reporting
+
+Interactive filters and slicers were incorporated into the dashboards.
+
+Drill-through functionality was developed to allow users to move from summarized business information to detailed records.
+
+### Product Details
+
+The Product Details page includes sales transaction information such as:
+
+- Sales Order ID.
+- Full Date.
+- Customer Name.
+- Order Quantity.
+- Unit Price.
+- Unit Price Discount.
+- Line Total.
+
+### Purchase Order Details
+
+The Purchase Order Details page provides detailed purchasing information, including purchase order, vendor, and date-related information where available in the model.
+
+## 8. Row-Level Security Implementation
+
+Row-Level Security was implemented to support controlled access to business information.
+
+### Final Recorded Status
+
+| Department | Status |
+|---|---|
+| Sales | Regional RLS implemented and validated |
+| Finance | Regional RLS implemented and validated |
+| HR | Regional mapping covers 14 of 290 employees; incomplete |
+| Supply Chain | Global authorized-user access tested; geographical regional mapping incomplete |
+
+### HR Limitation
+
+The current HR regional mapping covers only 14 out of 290 employees. Complete geographical regional security has not been implemented.
+
+### Supply Chain Limitation
+
+Global authorized-user access was tested. However, geographical regional mapping remains incomplete because operational production locations were not verified as geographical facilities.
+
+These limitations were documented rather than presenting incomplete security as fully implemented.
+
+## 9. Technical Challenges and Troubleshooting
+
+### 9.1 HR Date Dimension Mismatch
+
+The date ranges in HR employee department history and employee pay history did not align with the existing date dimension.
+
+**Resolution:**
+
+- Updated/extended the date dimension.
+- Revised the relevant HR fact-loading SQL.
+- Checked the resulting date coverage.
+
+### 9.2 SQL Server Collation Conflict
+
+A collation conflict occurred during inventory transaction development.
+
+**Resolution:**
+
+Used `COLLATE DATABASE_DEFAULT` where appropriate to resolve the reported string comparison conflict.
+
+### 9.3 Power BI Model Synchronization
+
+Power Query date-dimension changes were not consistently reflected in the Power BI model and related HR fact tables.
+
+**Resolution:**
+
+- Refreshed the model.
+- Synchronized the updated data.
+- Verified the updated tables and relationships.
+
+### 9.4 DAX and Filter-Context Troubleshooting
+
+Several DAX measures required investigation, particularly time-intelligence calculations and filter-context behaviour.
+
+These investigations covered Sales, Finance, HR, and Supply Chain reporting.
+
+Final measure values should be verified against the completed PBIX and available test evidence. This journal does not claim that every earlier measure issue was independently proven resolved.
+
+## 10. Power BI Refresh and Deployment
+
+A local refresh in Power BI Desktop was completed without an error.
+
+Power BI Service publishing was part of the initial deployment plan but was not completed.
+
+As a result:
+
+- The completed reporting environment is Power BI Desktop.
+- Publishing to Power BI Service was not completed.
+- Gateway configuration for a published service model was not completed.
+- Cloud scheduled refresh was not configured or validated.
+
+## 11. Final Presentation and Working Demo
+
+The final project presentation and complete working demonstration video were prepared as part of the project submission.
+
+Both deliverables are hosted externally on Google Drive to avoid uploading large presentation and video files directly into the GitHub repository.
+
+The Google Drive access links are maintained in the `Final Project Deliverables` section of the main README.
+
+The working demonstration covers the major implementation components, including the SQL Server warehouse, Azure Data Factory pipelines, Power BI dashboards, drill-through functionality, and the implemented Row-Level Security scope.
+
+## 12. Final Project Outcome
+
+The completed project includes:
+
+- AdventureWorks2025 operational source.
+- Custom SQL Server warehouse `EnterpriseBI_DW`.
+- Fact and dimension structures for four business domains.
+- Azure Data Factory integration.
+- Self-hosted integration runtime.
 - Four departmental ETL pipelines.
-- Master orchestration pipeline with sequential dependencies.
-- Successful individual and master pipeline execution and testing.
+- Master orchestration pipeline.
+- Power BI semantic model.
+- DAX measures.
+- Four departmental KPI dashboards.
+- Interactive filtering.
+- Drill-through reporting.
+- Sales and Finance regional RLS.
+- Documented HR and Supply Chain RLS limitations.
+- Final presentation.
+- Working demo materials.
+- Project documentation.
 
-**Phase 3 – Building Data Movement with Azure Data Factory: COMPLETED.**
-
-**Next Phase: DAX Measures and Analytical Calculations in Power BI.**
+Power BI Service publishing, cloud scheduled refresh, complete HR geographical RLS, and complete Supply Chain geographical RLS remain outside the completed implementation scope.

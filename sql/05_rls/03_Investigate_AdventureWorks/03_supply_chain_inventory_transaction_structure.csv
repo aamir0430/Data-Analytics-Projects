@@ -1,0 +1,9 @@
+﻿TransactionID,int
+ProductID,int
+ReferenceOrderID,int
+ReferenceOrderLineID,int
+TransactionDate,datetime
+TransactionType,nchar
+Quantity,int
+ActualCost,money
+ModifiedDate,datetime

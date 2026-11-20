@@ -1,0 +1,10 @@
+﻿WorkOrderID,int
+ProductID,int
+OrderQty,int
+StockedQty,int
+ScrappedQty,smallint
+StartDate,datetime
+EndDate,datetime
+DueDate,datetime
+ScrapReasonID,smallint
+ModifiedDate,datetime
