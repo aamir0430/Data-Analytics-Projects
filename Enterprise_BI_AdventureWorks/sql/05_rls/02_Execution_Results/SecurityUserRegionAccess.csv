@@ -1,0 +1,5 @@
+﻿UserRegionAccessKey,int,NO
+UserEmail,nvarchar,NO
+RegionKey,int,NO
+IsActive,bit,NO
+CreatedAt,datetime2,NO

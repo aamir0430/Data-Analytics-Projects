@@ -1,0 +1,5 @@
+﻿LocationKey,int
+LocationID,smallint
+LocationName,nvarchar
+CostRate,smallmoney
+Availability,decimal

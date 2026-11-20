@@ -1,0 +1,16 @@
+﻿EmployeeKey,int
+EmployeeID,int
+FirstName,nvarchar
+MiddleName,nvarchar
+LastName,nvarchar
+EmployeeName,nvarchar
+JobTitle,nvarchar
+BirthDate,date
+MaritalStatus,nchar
+Gender,nchar
+HireDate,date
+SalariedFlag,bit
+VacationHours,smallint
+SickLeaveHours,smallint
+CurrentFlag,bit
+ModifiedDate,datetime

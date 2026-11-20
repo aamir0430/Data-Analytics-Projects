@@ -1,0 +1,9 @@
+﻿VendorKey,int
+VendorID,int
+AccountNumber,nvarchar
+VendorName,nvarchar
+CreditRating,tinyint
+PreferredVendorStatus,bit
+ActiveFlag,bit
+PurchasingWebServiceURL,nvarchar
+SourceModifiedDate,datetime
